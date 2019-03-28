@@ -1,25 +1,82 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component, ReactEventHandler } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import { number } from "prop-types";
 
-class App extends Component {
+export interface Props {
+  name: string | undefined;
+}
+export interface State {
+  name: string | undefined;
+  clicked: number;
+}
+
+class App extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+  }
+
+  state: State = {
+    name: undefined,
+    clicked: 0
+  };
+
+  componentDidMount() {
+    this.setState({
+      name: this.props.name
+    });
+  }
+
+  componentWillUpdate(prevprops: Props) {
+    if (prevprops.name !== this.props.name) {
+      this.setState({
+        name: this.props.name
+      });
+    }
+  }
+
+  handleNameChange(event: any) {
+    this.setState({
+      name: event.target.value
+    });
+  }
+
+  handleClick() {
+    this.setState({
+      clicked: this.state.clicked + 1
+    });
+  }
+
+  revertClickCounter() {
+    this.setState({
+      clicked: 0
+    });
+  }
+
   render() {
+    const { name, clicked } = this.state;
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <h5>class component</h5>
+        <h1>The current name is: {name}</h1>
+        <h2>You have clicked the button {clicked} times</h2>
+        <div>
+          <span>
+            What is the new name?{" "}
+            <input
+              type="text"
+              placeholder={name}
+              onChange={event => this.handleNameChange(event)}
+            />
+          </span>
+        </div>
+        <div>
+          <button onClick={() => this.handleClick()}>Add Click</button>
+          <br />
+          <button onClick={() => this.revertClickCounter()}>
+            Revert Click Counter
+          </button>
+        </div>
       </div>
     );
   }
