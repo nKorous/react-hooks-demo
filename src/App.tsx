@@ -1,7 +1,5 @@
 import React, { Component, ReactEventHandler } from "react";
-import logo from "./logo.svg";
 import "./App.css";
-import { number } from "prop-types";
 
 export interface Props {
   name: string | undefined;

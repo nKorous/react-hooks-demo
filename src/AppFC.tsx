@@ -1,16 +1,26 @@
 import React, { FC, useState, useEffect, useMemo } from "react";
 import "./App.css";
 
-export interface Props {
+export interface OwnProps {
   name: string | undefined;
 }
 
-const AppFC: FC<Props> = ({ name = "Some Name Here" }) => {
+export type Props = OwnProps;
+
+const AppFC: FC<Props> = ({
+  name = "Some Name Here",
+}) => {
   const [currentName, setCurrentName] = useState<string | undefined>(undefined);
   const [clicked, setClicked] = useState<number>(0);
+
   useEffect(() => {
+    //Do this
     setCurrentName(name);
-  }, [name]);
+
+    return () => {
+      //On onUnmount
+    };
+  }, [name]); //When this changes
 
   const handleNameChange = (event: any) => {
     setCurrentName(event.target.value);
@@ -50,4 +60,4 @@ const AppFC: FC<Props> = ({ name = "Some Name Here" }) => {
   );
 };
 
-export default AppFC
+export default AppFC;
